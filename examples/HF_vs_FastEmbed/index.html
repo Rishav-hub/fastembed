@@ -1,0 +1,1046 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Nirant Kasliwal">
+      
+      
+        <link rel="canonical" href="https://qdrant.github.io/fastembed/examples/HF_vs_FastEmbed/">
+      
+      
+        <link rel="prev" href="../../Getting%20Started/">
+      
+      
+        <link rel="next" href="../Retrieval_with_FastEmbed/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+    
+    
+      
+        <title>HF vs FastEmbed - FastEmbed</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0e669242.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#huggingface-vs-fastembed" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+              </button>
+            
+            
+<div style="text-align: center">
+    If you're using FastEmbed from Qdrant, join the
+    <a rel="me" href="https://discord.gg/g6g4tagk">
+        <span class="twemoji mastodon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M524.531 69.836a1.5 1.5 0 0 0-.764-.7A485.065 485.065 0 0 0 404.081 32.03a1.816 1.816 0 0 0-1.923.91 337.461 337.461 0 0 0-14.9 30.6 447.848 447.848 0 0 0-134.426 0 309.541 309.541 0 0 0-15.135-30.6 1.89 1.89 0 0 0-1.924-.91 483.689 483.689 0 0 0-119.688 37.107 1.712 1.712 0 0 0-.788.676C39.068 183.651 18.186 294.69 28.43 404.354a2.016 2.016 0 0 0 .765 1.375 487.666 487.666 0 0 0 146.825 74.189 1.9 1.9 0 0 0 2.063-.676A348.2 348.2 0 0 0 208.12 430.4a1.86 1.86 0 0 0-1.019-2.588 321.173 321.173 0 0 1-45.868-21.853 1.885 1.885 0 0 1-.185-3.126 251.047 251.047 0 0 0 9.109-7.137 1.819 1.819 0 0 1 1.9-.256c96.229 43.917 200.41 43.917 295.5 0a1.812 1.812 0 0 1 1.924.233 234.533 234.533 0 0 0 9.132 7.16 1.884 1.884 0 0 1-.162 3.126 301.407 301.407 0 0 1-45.89 21.83 1.875 1.875 0 0 0-1 2.611 391.055 391.055 0 0 0 30.014 48.815 1.864 1.864 0 0 0 2.063.7A486.048 486.048 0 0 0 610.7 405.729a1.882 1.882 0 0 0 .765-1.352c12.264-126.783-20.532-236.912-86.934-334.541ZM222.491 337.58c-28.972 0-52.844-26.587-52.844-59.239s23.409-59.241 52.844-59.241c29.665 0 53.306 26.82 52.843 59.239 0 32.654-23.41 59.241-52.843 59.241Zm195.38 0c-28.971 0-52.843-26.587-52.843-59.239s23.409-59.241 52.843-59.241c29.667 0 53.307 26.82 52.844 59.239 0 32.654-23.177 59.241-52.844 59.241Z"/></svg>
+        </span>
+        <strong>Discord server</strong>
+    </a>
+    to get help and share your work! Or check out <a rel="me" href="https://login.cloud.qdrant.io/">Qdrant Cloud</a> to
+    get started with vector search!
+</div>
+
+          </div>
+          
+            <script>var content,el=document.querySelector("[data-md-component=announce]");el&&(content=el.querySelector(".md-typeset"),__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0))</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FastEmbed" class="md-header__button md-logo" aria-label="FastEmbed" data-md-component="logo">
+      
+  <img src="../../assets/favicon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FastEmbed
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              HF vs FastEmbed
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/qdrant/fastembed/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    qdrant/fastembed
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FastEmbed" class="md-nav__button md-logo" aria-label="FastEmbed" data-md-component="logo">
+      
+  <img src="../../assets/favicon.png" alt="logo">
+
+    </a>
+    FastEmbed
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/qdrant/fastembed/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    qdrant/fastembed
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ⚡️ What is FastEmbed?
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Getting%20Started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    HF vs FastEmbed
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    HF vs FastEmbed
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    📦 Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    📖 Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-huggingface" class="md-nav__link">
+    Setting up 🤗 Huggingface
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-fastembed" class="md-nav__link">
+    Setting up ⚡️FastEmbed
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison" class="md-nav__link">
+    📊 Comparison
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calculating-stats" class="md-nav__link">
+    🚀 Calculating Stats
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    📈 Results
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Retrieval_with_FastEmbed/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Retrieval with FastEmbed
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Experimental
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Experimental
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../experimental/1M_Embedding_Creation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1M Embedding Creation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../experimental/Binary%20Quantization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Binary Quantization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../experimental/FastEmbed_Usage_with_Qdrant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FastEmbed Usage with Qdrant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    📦 Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    📖 Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-huggingface" class="md-nav__link">
+    Setting up 🤗 Huggingface
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-fastembed" class="md-nav__link">
+    Setting up ⚡️FastEmbed
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison" class="md-nav__link">
+    📊 Comparison
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calculating-stats" class="md-nav__link">
+    🚀 Calculating Stats
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    📈 Results
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+ 
+
+
+                  
+
+  
+  
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var requireJsScript = document.createElement('script');
+    requireJsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js';
+
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var jupyterWidgetsScript = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    jupyterWidgetsScript.src = widgetRendererSrc;
+
+    document.body.appendChild(requireJsScript);
+    document.body.appendChild(jupyterWidgetsScript);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="huggingface-vs-fastembed">🤗 Huggingface vs ⚡ FastEmbed️</h1>
+<p>Comparing the performance of Huggingface's 🤗 Transformers and ⚡ FastEmbed️ on a simple task on the following machine: Apple M2 Max, 32 GB RAM</p>
+<h2 id="imports">📦 Imports</h2>
+<p>Importing the necessary libraries for this comparison.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">fastembed.embedding</span> <span class="kn">import</span> <span class="n">DefaultEmbedding</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModel</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="data">📖 Data</h2>
+<p>data is a list of strings, each string is a document.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">documents</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Chandrayaan-3 is India&#39;s third lunar mission&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;It aimed to land a rover on the Moon&#39;s surface - joining the US, China and Russia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The mission is a follow-up to Chandrayaan-2, which had partial success&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Chandrayaan-3 will be launched by the Indian Space Research Organisation (ISRO)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The estimated cost of the mission is around $35 million&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;It will carry instruments to study the lunar surface and atmosphere&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Chandrayaan-3 landed on the Moon&#39;s surface on 23rd August 2023&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;It consists of a lander named Vikram and a rover named Pragyan similar to Chandrayaan-2. Its propulsion module would act like an orbiter.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The propulsion module carries the lander and rover configuration until the spacecraft is in a 100-kilometre (62 mi) lunar orbit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The mission used GSLV Mk III rocket for its launch&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Chandrayaan-3 was launched from the Satish Dhawan Space Centre in Sriharikota&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Chandrayaan-3 was launched earlier in the year 2023&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="setting-up-huggingface">Setting up 🤗 Huggingface</h2>
+<p>We'll be using the <a href="https://huggingface.co/transformers/">Huggingface Transformers</a> with PyTorch library to generate embeddings. We'll be using the same model across both libraries for a fair(er?) comparison.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">HF</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">average_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_hidden_states</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">last_hidden</span> <span class="o">=</span> <span class="n">last_hidden_states</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span><span class="o">~</span><span class="n">attention_mask</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span><span class="o">.</span><span class="n">bool</span><span class="p">(),</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">last_hidden</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">attention_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">embed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="c1"># Tokenize the input texts</span>
+        <span class="n">batch_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">batch_dict</span><span class="p">)</span>
+        <span class="n">last_hidden_state</span> <span class="o">=</span> <span class="n">model_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Perform mean pooling with attention weighting</span>
+        <span class="n">input_mask_expanded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">attention_mask</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">last_hidden_state</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">last_hidden_state</span> <span class="o">*</span> <span class="n">input_mask_expanded</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+            <span class="n">input_mask_expanded</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">a_min</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">average_pool</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">last_hidden_state</span><span class="p">,</span> <span class="n">batch_dict</span><span class="p">[</span><span class="s2">&quot;attention_mask&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+
+<span class="n">hf</span> <span class="o">=</span> <span class="n">HF</span><span class="p">(</span><span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;BAAI/bge-small-en&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="setting-up-fastembed">Setting up ⚡️FastEmbed</h2>
+<p>Sorry, don't have a lot to set up here. We'll be using the default model, which is Flag Embedding, same as the Huggingface model.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">embedding_model</span> <span class="o">=</span> <span class="n">DefaultEmbedding</span><span class="p">()</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="comparison">📊 Comparison</h2>
+<p>We'll be comparing the following metrics: Minimum, Maximum, Mean, across k runs. Let's write a function to do that:</p>
+<h3 id="calculating-stats">🚀 Calculating Stats</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_time_stats</span><span class="p">(</span><span class="n">embed_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">documents</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="c1"># Timing the embed_func call</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="n">embed_func</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+
+    <span class="c1"># Returning mean, max, and min time for the call</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="o">/</span> <span class="n">k</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">times</span><span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="n">hf_stats</span> <span class="o">=</span> <span class="n">calculate_time_stats</span><span class="p">(</span><span class="n">hf</span><span class="o">.</span><span class="n">embed</span><span class="p">,</span> <span class="n">documents</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fst_stats</span> <span class="o">=</span> <span class="n">calculate_time_stats</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">embed</span><span class="p">,</span> <span class="n">documents</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average time taken by HF(PyTorch): </span><span class="si">{</span><span class="n">hf_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average time taken by FastEmbed: </span><span class="si">{</span><span class="n">fst_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Average time taken by HF(PyTorch): 0.06770326375961304
+Average time taken by FastEmbed: 2.4080276489257813e-07
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="results">📈 Results</h2>
+<p>Let's run the comparison and see the results.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">matplotlib</span> <span class="o">--</span><span class="n">quiet</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+    - Avoid using `tokenizers` before the fork if possible
+    - Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_character_per_second_comparison</span><span class="p">(</span>
+    <span class="n">hf_stats</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">fst_stats</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">documents</span><span class="p">:</span> <span class="nb">list</span>
+<span class="p">):</span>
+    <span class="c1"># Calculating total characters in documents</span>
+    <span class="n">total_characters</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">)</span>
+
+    <span class="c1"># Calculating characters per second for each model</span>
+    <span class="n">hf_chars_per_sec</span> <span class="o">=</span> <span class="n">total_characters</span> <span class="o">/</span> <span class="n">hf_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Mean time is at index 0</span>
+    <span class="n">fst_chars_per_sec</span> <span class="o">=</span> <span class="n">total_characters</span> <span class="o">/</span> <span class="n">fst_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Plotting the bar chart</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;HF Embed (Torch)&quot;</span><span class="p">,</span> <span class="s2">&quot;FastEmbed&quot;</span><span class="p">]</span>
+    <span class="n">chars_per_sec</span> <span class="o">=</span> <span class="p">[</span><span class="n">hf_chars_per_sec</span><span class="p">,</span> <span class="n">fst_chars_per_sec</span><span class="p">]</span>
+
+    <span class="n">bars</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">chars_per_sec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;#1f356c&quot;</span><span class="p">,</span> <span class="s2">&quot;#dd1f4b&quot;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Characters per Second&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Characters Processed per Second Comparison&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Adding the number at the top of each bar</span>
+    <span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">chars</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">chars_per_sec</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">(),</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">chars</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1f356c&quot;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">plot_character_per_second_comparison</span><span class="p">(</span><span class="n">hf_stats</span><span class="p">,</span> <span class="n">fst_stats</span><span class="p">,</span> <span class="n">documents</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_png output_subarea">
+<img alt="No description has been provided for this image" src="data:image/png;base64,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"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+                
+
+
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Maintained by <a href="https://github.com/qdrant">Qdrant</a>. Originally created by <a href="https://nirantk.com/about">Nirant Kasliwal</a>.
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "navigation.instant", "navigation.tracking", "navigation.expand", "navigation.sections", "content.code.annotate", "toc.follow", "header.autohide", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.78eede0e.min.js"></script>
+      
+    
+  </body>
+</html>
